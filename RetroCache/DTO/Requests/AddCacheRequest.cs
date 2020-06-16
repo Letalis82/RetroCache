@@ -16,5 +16,10 @@ namespace RetroCache.DTO.Requests
             Longitude = longitude;
             Hints = hints;
         }
+
+        public AddCacheRequest()
+        {
+
+        }
     }
 }

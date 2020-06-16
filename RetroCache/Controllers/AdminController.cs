@@ -57,25 +57,25 @@ namespace RetroCache.Controllers
             return _retroLogic.RemoveAnswer(answerId);
         }
 
-        [HttpDelete("GetAnswers")]
+        [HttpGet("GetAnswers")]
         public BaseResult<List<Answer>> GetAnswers()
         {
             return _retroLogic.GetAnswers();
         }
 
-        [HttpDelete("GetQuestions")]
+        [HttpGet("GetQuestions")]
         public BaseResult<List<Question>> GetQuestions()
         {
             return _retroLogic.GetQuestions();
         }
 
-        [HttpDelete("GetQAs")]
+        [HttpGet("GetQAs")]
         public BaseResult<List<QA>> GetQAs()
         {
             return _retroLogic.GetQAs();
         }
 
-        [HttpDelete("GetCaches")]
+        [HttpGet("GetCaches")]
         public BaseResult<List<Cache>> GetCaches()
         {
             return _retroLogic.GetCaches();

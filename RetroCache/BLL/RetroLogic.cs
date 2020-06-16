@@ -185,22 +185,26 @@ namespace RetroCache.BLL
 
         public BaseResult<List<Cache>> GetCaches()
         {
-            return new BaseResult<List<Cache>>(_cacheStore.Data);
+            var res = _cacheStore.Data.Any() ? _cacheStore.Data : null;
+            return new BaseResult<List<Cache>>(res);
         }
 
         public BaseResult<List<Answer>> GetAnswers()
         {
-            return new BaseResult<List<Answer>>(_answerStore.Data);
-        }
-
-        BaseResult<List<Question>> GetQuestions()
-        {
-            return new BaseResult<List<Question>>(_questionStore.Data);
+            var res = _answerStore.Data.Any() ? _answerStore.Data : null;
+            return new BaseResult<List<Answer>>(res);
         }
 
         public BaseResult<List<QA>> GetQAs()
         {
-            return new BaseResult<List<QA>>(_qaStore.Data);
+            var res = _qaStore.Data.Any() ? _qaStore.Data : null;
+            return new BaseResult<List<QA>>(res);
+        }
+
+        BaseResult<List<Question>> IRetroLogic.GetQuestions()
+        {
+            var res = _questionStore.Data.Any() ? _questionStore.Data : null;
+            return new BaseResult<List<Question>>(res);
         }
     }
 }

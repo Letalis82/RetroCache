@@ -14,5 +14,10 @@ namespace RetroCache.DTO.Requests
             QuestionId = questionId;
             CacheId = cacheId;
         }
+
+        public AddQARequest()
+        {
+
+        }
     }
 }

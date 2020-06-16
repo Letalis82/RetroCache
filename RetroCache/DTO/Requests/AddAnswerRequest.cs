@@ -5,5 +5,10 @@
         public string Answer { get; }
 
         public AddAnswerRequest(string answer) => Answer = answer;
+
+        public AddAnswerRequest()
+        {
+
+        }
     }
 }
