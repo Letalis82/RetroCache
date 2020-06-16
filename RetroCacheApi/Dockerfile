@@ -3,19 +3,20 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
-COPY ["RetroCache/RetroCache.csproj", "RetroCache/"]
-RUN dotnet restore "RetroCache/RetroCache.csproj"
+COPY ["RetroCacheApi/RetroCacheApi.csproj", "RetroCacheApi/"]
+RUN dotnet restore "RetroCacheApi/RetroCacheApi.csproj"
 COPY . .
-WORKDIR "/src/RetroCache"
-RUN dotnet build "RetroCache.csproj" -c Release -o /app/build
+WORKDIR "/src/RetroCacheApi"
+RUN dotnet build "RetroCacheApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "RetroCache.csproj" -c Release -o /app/publish
+RUN dotnet publish "RetroCacheApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "RetroCache.dll"]
+ENTRYPOINT ["dotnet", "RetroCacheApi.dll"]
