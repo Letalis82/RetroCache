@@ -1,0 +1,37 @@
+﻿@page "/"
+@inject GameState gameState
+
+<h1>@gameState.Title</h1>
+<p>@((MarkupString)@gameState.Question)</p>
+<br />
+@if (gameState.ShowAnswerBox && !gameState.AnswerCorrect)
+{
+    <p><input type="text" @bind="@CurrentAnswer" /></p>
+    <p><button class="btn btn-primary" @onclick="CheckAnswer">Check answer</button></p>
+
+}
+else
+{
+    <button class="btn btn-primary" @onclick="Next">Next</button>
+}
+
+@if (gameState.AnswerCorrect)
+{
+    <h2>@gameState.AnswerHeader</h2>
+    <p>@gameState.Answer</p>
+}
+
+@code
+{
+    string CurrentAnswer;
+    void Next()
+    {
+        gameState.Next();
+    }
+
+    void CheckAnswer()
+    {
+        gameState.ValidateAnswer(CurrentAnswer);
+    }
+
+}

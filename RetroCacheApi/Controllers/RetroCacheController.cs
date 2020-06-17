@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RetroCache.BLL;
-using RetroCache.DTO;
-using RetroCache.DTO.Requests;
-using RetroCache.DTO.Responses;
+using RetroCache.Shared;
+using RetroCache.Shared.Requests;
+using RetroCache.Shared.Responses;
 
 namespace RetroCache.Controllers
 {

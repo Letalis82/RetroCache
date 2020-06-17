@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RetroCache.BLL;
-using RetroCache.DTO;
-using RetroCache.DTO.Requests;
+using RetroCache.Shared;
+using RetroCache.Shared.Requests;
 using System;
 using System.Collections.Generic;
 

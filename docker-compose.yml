@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  retrocache:
+    image: ${DOCKER_REGISTRY-}retrocache
+    build:
+      context: .
+      dockerfile: RetroCache/Dockerfile
+
+  retrocacheapi:
+    image: ${DOCKER_REGISTRY-}retrocacheapi
+    build:
+      context: .
+      dockerfile: RetroCacheApi/Dockerfile
+

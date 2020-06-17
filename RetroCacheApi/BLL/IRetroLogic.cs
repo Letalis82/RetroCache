@@ -1,4 +1,4 @@
-﻿using RetroCache.DTO;
+﻿using RetroCache.Shared;
 using System;
 using System.Collections.Generic;
 
