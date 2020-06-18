@@ -3,7 +3,6 @@ using RetroCache.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 
 namespace RetroCache.BLL
 {
@@ -87,20 +86,12 @@ namespace RetroCache.BLL
 
         public bool ValidateAnswer(Guid questionId, string givenAnswer)
         {
-            try
+            var foundQ = _questionStore.Data.FirstOrDefault(q => q.Id == questionId);
+
+            if (foundQ != null)
             {
-                var foundQA = _qaStore.Data.FirstOrDefault(q => q.QuestionId == questionId);
-                var foundA = _answerStore.Data.FirstOrDefault(a => a.Id == foundQA.AnswerId);
-
-                if (foundA != null)
-                {
-                    bool result = foundA.AnswerString.Equals(givenAnswer, StringComparison.InvariantCultureIgnoreCase);
-                    _gameController.UpdateQuestionState(questionId, result);
-
-                    return result;
-                }
+                return foundQ.QuestionString.Equals(givenAnswer, StringComparison.InvariantCultureIgnoreCase);
             }
-            catch { }
 
             return false;
         }
@@ -136,31 +127,7 @@ namespace RetroCache.BLL
             return new BaseResult<Question>(_gameController.CurrentQuestion());
         }
 
-        public BaseResult<bool> StartGame()
-        {
-            var startValidation = ValidateGameStart();
-            if (!startValidation.HasError)
-            {
-                _gameController.StartGame(_questionStore.Data, _answerStore.Data, _qaStore.Data, _cacheStore.Data);
-
-                return new BaseResult<bool>(true);
-            }
-            return new BaseResult<bool>(false);
-        }
-
-        public BaseResult<bool> RestartGame()
-        {
-            var startValidation = ValidateGameStart();
-            if (!startValidation.HasError)
-            {
-                _gameController.RestartGame();
-
-                return new BaseResult<bool>(true);
-            }
-            return new BaseResult<bool>(false);
-        }
-
-        private BaseResult ValidateGameStart()
+        public BaseResult StartGame()
         {
             if (!_questionStore.Data.Any() || !_answerStore.Data.Any() || !_qaStore.Data.Any() || !_cacheStore.Data.Any())
             {
@@ -182,8 +149,7 @@ namespace RetroCache.BLL
 
             foreach (var item in _questionStore.Data)
             {
-                var c = _qaStore.Data.Select(c => c.QuestionId)
-                    .Contains(item.Id);
+                var c = _qaStore.Data.Select(c => c.QuestionId == item.Id).FirstOrDefault();
 
                 if (!c)
                 { return new BaseResult("Question is not in the question list"); }
@@ -191,8 +157,7 @@ namespace RetroCache.BLL
 
             foreach (var item in _answerStore.Data)
             {
-                var c = _qaStore.Data.Select(c => c.AnswerId)
-                   .Contains(item.Id);
+                var c = _qaStore.Data.Select(c => c.AnswerId == item.Id).FirstOrDefault();
 
                 if (!c)
                 { return new BaseResult("Answer is not in the question list"); }
@@ -200,12 +165,20 @@ namespace RetroCache.BLL
 
             foreach (var item in _cacheStore.Data)
             {
-                var c = _qaStore.Data.Select(c => c.CacheId)
-                  .Contains(item.Id);
+                var c = _qaStore.Data.Select(c => c.CacheId == item.Id).FirstOrDefault();
 
                 if (!c)
                 { return new BaseResult("Cache is not in the question list"); }
             }
+
+            _gameController.StartGame(_questionStore.Data, _answerStore.Data, _qaStore.Data, _cacheStore.Data);
+
+            return new BaseResult();
+        }
+
+        public BaseResult RestartGame()
+        {
+            _gameController.RestartGame();
 
             return new BaseResult();
         }
@@ -230,14 +203,8 @@ namespace RetroCache.BLL
 
         BaseResult<List<Question>> IRetroLogic.GetQuestions()
         {
-            var res = _questionStore.Data.Any() ? _questionStore.Data.OrderBy(d => d.Order).ToList() : null;
+            var res = _questionStore.Data.Any() ? _questionStore.Data : null;
             return new BaseResult<List<Question>>(res);
-        }
-
-        public BaseResult<Cache> GetCacheCorrespondingToQuestion(Guid questionId)
-        {
-            var cacheId =_qaStore.Data.FirstOrDefault(q => q.QuestionId == questionId).CacheId;
-            return new BaseResult<Cache>(_cacheStore.Data.FirstOrDefault(c => c.Id == cacheId));
         }
     }
 }

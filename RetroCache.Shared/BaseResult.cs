@@ -36,5 +36,10 @@
             HasError = true;
             ErrorMessage = errorMessage;
         }
+
+        public BaseResult()
+        {
+
+        }
     }
 }

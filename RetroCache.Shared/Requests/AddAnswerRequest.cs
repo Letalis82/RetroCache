@@ -2,7 +2,7 @@
 {
     public class AddAnswerRequest
     {
-        public string Answer { get; }
+        public string Answer { get; set; }
 
         public AddAnswerRequest(string answer) => Answer = answer;
 

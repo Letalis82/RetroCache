@@ -12,5 +12,10 @@ namespace RetroCache.Shared.Requests
             QuestionId = questionId;
             GivenAnswer = givenAnswer;
         }
+
+        public ValidateAnswerRequest()
+        {
+
+        }
     }
 }

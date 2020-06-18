@@ -4,9 +4,9 @@ namespace RetroCache.Shared.Requests
 {
     public class AddQARequest
     {
-        public Guid AnswerId { get; }
-        public Guid QuestionId { get; }
-        public Guid CacheId { get; }
+        public Guid AnswerId { get; set; }
+        public Guid QuestionId { get; set; }
+        public Guid CacheId { get; set; }
 
         public AddQARequest(Guid answerId, Guid questionId, Guid cacheId)
         {

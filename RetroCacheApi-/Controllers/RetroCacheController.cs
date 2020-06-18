@@ -11,6 +11,7 @@ namespace RetroCache.Controllers
     [Route("[controller]")]
     public class RetroCacheController : ControllerBase
     {
+       
         private readonly ILogger<RetroCacheController> _logger;
         private readonly IRetroLogic _retroLogic;
 
@@ -25,21 +26,11 @@ namespace RetroCache.Controllers
         {
             var res = _retroLogic.ValidateAnswer(validateAnswerRequest.QuestionId, validateAnswerRequest.GivenAnswer);
 
-            if (res)
-            {
-                var cache = _retroLogic.GetCacheCorrespondingToQuestion(validateAnswerRequest.QuestionId);
-
-                if (!cache.HasError)
-                { return new ValidateAnswerResponse(cache.Data); }
-
-                return new ValidateAnswerResponse(cache.ErrorMessage);
-            }
-
             return new ValidateAnswerResponse(res);
         }
 
-        [HttpGet("GetCurrentQuestion")]
-        public CurrentQuestionResponse GetCurrentQuestion()
+        [HttpGet("GetQuestions")]
+        public CurrentQuestionResponse GetQuestions()
         {
             var res = _retroLogic.GetCurrentQuestion();
 
@@ -51,13 +42,13 @@ namespace RetroCache.Controllers
         }
 
         [HttpGet("StartGame")]
-        public BaseResult<bool> StartGame()
+        public BaseResult StartGame()
         {
             return _retroLogic.StartGame();
         }
 
         [HttpGet("RestartGame")]
-        public BaseResult<bool> RestartGame()
+        public BaseResult RestartGame()
         {
             return _retroLogic.RestartGame();
         }

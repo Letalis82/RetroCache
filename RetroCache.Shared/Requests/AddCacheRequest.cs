@@ -7,7 +7,7 @@ namespace RetroCache.Shared.Requests
         public string Description { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
-        public List<string> Hints { get; }
+        public List<string> Hints { get; set; }
 
         public AddCacheRequest(string description, string latitude, string longitude, List<string> hints)
         {

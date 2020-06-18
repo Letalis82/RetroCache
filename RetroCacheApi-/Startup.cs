@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using RetroCache.BLL;
 
-namespace RetroCacheApi
+namespace RetroCache
 {
     public class Startup
     {

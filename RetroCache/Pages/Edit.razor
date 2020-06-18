@@ -1,0 +1,169 @@
+﻿@page "/edit"
+@inject GameState gameState
+
+<h3>Add question</h3>
+<input type="text" @bind="orderId" size="20" />
+<input type="text" placeholder="Vul hier vraag in" size="250" @bind="question" />
+
+<p><button class="btn btn-primary" @onclick="AddQuestion">Add question</button></p>
+
+<h3>Add answer</h3>
+<input type="text" placeholder="Antwoord" size="250" @bind="answer" />
+
+<p><button class="btn btn-primary" @onclick="AddAnswer">Add answer</button></p>
+
+<h3>Add cache</h3>
+<p><input type="text" placeholder="Omschrijving" size="100" @bind="description" /></p>
+<p><input type="text" placeholder="Latitude" size="100" @bind="latitude" /></p>
+<p><input type="text" placeholder="Longitude" size="100" @bind="longitude" /></p>
+
+<p><button class="btn btn-primary" @onclick="AddCache">Add cache</button></p>
+
+<h3>Add qa combi</h3>
+<p><input type="text" placeholder="Question Id" size="100" @bind="questionId" /></p>
+<p><input type="text" placeholder="Answer Id" size="100" @bind="answerId" /></p>
+<p><input type="text" placeholder="Cache Id" size="100" @bind="cacheId" /></p>
+
+<p><button class="btn btn-primary" @onclick="AddQA">Add QA combi</button></p>
+
+<h1>Questions</h1>
+@if (Inventory.Questions != null)
+{
+    @foreach (var q in Inventory.Questions)
+    {
+<p>@q.Id</p>
+        <p><button class="btn-danger" @onclick="@(() => RemoveQuestion(@q.Id))">Del</button> [@q.Order] @q.QuestionString</p>
+
+    }
+}
+
+<h1>Answers</h1>
+@if (Inventory.Answers != null)
+{
+    @foreach (var q in Inventory.Answers)
+    {
+<p>@q.Id</p>
+        <p><button class="btn-danger" @onclick="@(() => RemoveAnswer(@q.Id))">Del</button> @q.AnswerString</p>
+    }
+}
+
+<h1>Caches</h1>
+@if (Inventory.Caches != null)
+{
+    @foreach (var q in Inventory.Caches)
+    {
+<p>@q.Id</p>
+        <p><button class="btn-danger" @onclick="@(() => RemoveCache(@q.Id))">Del</button> Lat:[@q.Latitude] Long:[{@q.Longitude}] Descr: {@q.Description}</p>
+    }
+}
+
+<h1>QA</h1>
+@if (Inventory.QAs != null)
+{
+    @foreach (var q in Inventory.QAs)
+    {
+        <p><button class="btn-danger" @onclick="@(() => RemoveQA(@q.Id))">Del</button> Qid:[@q.QuestionId] Aid:[@q.AnswerId] Cid:[{@q.CacheId}]</p>
+    }
+}
+
+
+
+
+@code {
+    string orderId;
+    string question, answer, longitude, latitude, description, questionId, answerId, cacheId;
+
+    int currentCount = 0;
+    RetroCache.DTO.Inventory Inventory = new DTO.Inventory();
+
+
+    protected override void OnInitialized()
+    {
+        ShowInventory();
+    }
+
+
+    async void RestartGame()
+    {
+        await gameState.Restart();
+    }
+
+    async void ShowInventory()
+    {
+        Inventory = await gameState.GetInventory();
+        this.StateHasChanged();
+    }
+
+    async void RemoveQuestion(Guid id)
+    {
+        await gameState.RemoveQuestion(id);
+        ShowInventory();
+    }
+
+    async void RemoveAnswer(Guid id)
+    {
+        await gameState.RemoveAnswer(id);
+        ShowInventory();
+    }
+
+    async void RemoveQA(Guid id)
+    {
+        await gameState.RemoveQA(id);
+        ShowInventory();
+    }
+
+    async void RemoveCache(Guid id)
+    {
+        await gameState.RemoveCache(id);
+        ShowInventory();
+    }
+
+    async void AddQuestion()
+    {
+        if (string.IsNullOrEmpty(orderId) || string.IsNullOrEmpty(question))
+        {
+            return;
+        }
+
+        if (!int.TryParse(orderId, out int val))
+        {
+            return;
+        }
+
+        await gameState.AddQuestion(int.Parse(orderId), question);
+        ShowInventory();
+    }
+
+    async void AddAnswer()
+    {
+        if (string.IsNullOrEmpty(answer))
+        {
+            return;
+        }
+
+        await gameState.AddAnswer(answer);
+        ShowInventory();
+    }
+
+    async void AddQA()
+    {
+        if (string.IsNullOrEmpty(answerId) || string.IsNullOrEmpty(questionId) || string.IsNullOrEmpty(cacheId))
+        {
+            return;
+        }
+
+        await gameState.AddQA(Guid.Parse(questionId), Guid.Parse(answerId), Guid.Parse(cacheId));
+        ShowInventory();
+    }
+
+    async void AddCache()
+    {
+        if (string.IsNullOrEmpty(description) || string.IsNullOrEmpty(longitude) || string.IsNullOrEmpty(latitude))
+        {
+            return;
+        }
+
+        await gameState.AddCache(description, latitude, longitude);
+        ShowInventory();
+    }
+}
