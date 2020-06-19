@@ -68,8 +68,8 @@ namespace RetroCache
 
         private void SetWelcome()
         {
-            Title = "Welkom Team Haai";
-            Question = "<h1>Hallo team Haai</h1>Vandaag wordt het een spannende dag, namelijk: wij van de BLD dienst servies en andere rommel hebben besloten jullie te helpen met jullie zoektoch naar de toekomst, namelijk het hosten van oude software in een nieuw jasje.<p>Daarom hebben wij voor jullie een aantal nuttige zaken laten slingeren, aan jullie de taak om deze te verzamelen</p>";
+            Title = "Retro 25 juno 2020";
+            Question = "<h2>Welkom team Haai</h2>Eindelijk een retro waarbij we niet vanachter onze laptop starende naar het scherm aan het terug blikken zijn!<p>We gaan er opuit!</p><br><p>Wat heb je nodig? Deze retro staat in het teken van docker, vandaag ben ik jullie kapitein. Omdat ik niet alleen kan sturen heb ik nog meer stuurlui nodig</p>En waar staan de beste stuurlui?<br>Juist die staan aan't WALterbosch complex.</p><br>Ik verwacht jullie allen daar om 10.u, neem je eigen lunch telefoon en goede schoenen mee.";
             ShowAnswerBox = false;
         }
 
