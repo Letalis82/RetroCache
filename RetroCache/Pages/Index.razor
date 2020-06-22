@@ -14,10 +14,10 @@
 <br />
 
 
-@if (gameState.IsGameStarted)
+@if (gameState.IsGameStarted && !gameState.IsLastQuestion)
 {
-    <p><input type="text" @bind="@currentAnswer" /></p>
-    <p><button class="btn btn-primary" @onclick="CheckAnswer">Check answer</button></p>
+     <p><input type="text" @bind="@currentAnswer" /></p>
+     <p><button class="btn btn-primary" @onclick="CheckAnswer">Check answer</button></p>
 }
 else
 {

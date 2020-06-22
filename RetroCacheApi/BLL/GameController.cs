@@ -25,7 +25,7 @@ namespace RetroCache.BLL
                 { return _questions.First(x => x.Id == q.QuestionId); }
             }
 
-            return new Question("Laatste locatie", 9999);
+            return new Question("Laatste locatie", 9999, true);
         }
 
         public void RestartGame()

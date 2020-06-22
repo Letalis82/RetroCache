@@ -58,6 +58,7 @@ namespace RetroCache
         public bool ShowAnswerBox { get; private set; }
 
         public bool IsGameStarted = false;
+        public bool IsLastQuestion = false;
 
         public GameState(IHttpClientFactory http, IOptions<RetroCache.Configuration.RetroCacheConfiguration> config)
         {
@@ -87,6 +88,7 @@ namespace RetroCache
         {
             _currentQuestion = q;
             Question = q.QuestionString;
+            IsLastQuestion = q.IsLastQuestion;
 
             if (q.Order >= 9999)
             { Title = "-"; }
@@ -146,6 +148,7 @@ namespace RetroCache
             CurrentCache = null;
             GameIsActive = false;
             IsGameStarted = false;
+            IsLastQuestion = false;
             SetWelcome();
 
             //restart

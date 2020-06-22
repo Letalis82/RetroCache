@@ -1,12 +1,24 @@
 ﻿@page "/restart"
 @inject GameState gameState
 
-<h1>Restart the game?</h1>
+@if (!passCorrect)
+{
+    <input type="password" placeholder="pass" size="250" @bind="insertedPass" />
+    <p><button class="btn btn-primary" @onclick="CheckPassword">Login</button></p>
+}
+else
+{
 
-<p><button class="btn btn-primary" @onclick="Start">Start the hunt!</button></p>
-<p><button class="btn btn-primary" @onclick="RestartGame">Restart</button></p>
+    <h1>Restart the game?</h1>
+
+    <p><button class="btn btn-primary" @onclick="Start">Start the hunt!</button></p>
+    <p><button class="btn btn-primary" @onclick="RestartGame">Restart</button></p>
+}
 
 @code {
+    bool passCorrect = false;
+    string insertedPass = string.Empty;
+
     async void RestartGame()
     {
         await gameState.Restart();
@@ -15,5 +27,13 @@
     void Start()
     {
         gameState.GameIsActive = true;
+    }
+
+    public void CheckPassword()
+    {
+        if (insertedPass == "barendt")
+        {
+            passCorrect = true;
+        }
     }
 }
