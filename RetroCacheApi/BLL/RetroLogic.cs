@@ -175,7 +175,7 @@ namespace RetroCache.BLL
 
             for (int i = 1; i < _questionStore.Data.Count; i++)
             {
-                var c = _questionStore.Data.Select(c => c.Order == i).FirstOrDefault();
+                bool c = _questionStore.Data.Any(d => d.Order == i);
 
                 if (!c)
                 { return new BaseResult<bool>("Incorrect question order"); }
