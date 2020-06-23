@@ -40,10 +40,10 @@ else
         {
             <p>@q.Id</p>
             <p>
+                <button class="btn-light" @onclick="@(() => SetQuestion(@q.Id))">Add</button>
                 <button class="btn-danger" @onclick="@(() => RemoveQuestion(@q.Id))">Del</button> [@q.Order]
                 @q.QuestionString
             </p>
-            <p><button class="btn-danger" @onclick="@(() => SetAnswer(@q.Id))">Add</button></p>
 
         }
     }
@@ -55,10 +55,10 @@ else
         {
             <p>@q.Id</p>
             <p>
+                <button class="btn-light" @onclick="@(() => SetAnswer(@q.Id))">Add</button>
                 <button class="btn-danger" @onclick="@(() => RemoveAnswer(@q.Id))">Del</button>
                 @q.AnswerString
             </p>
-            <p><button class="btn-danger" @onclick="@(() => SetAnswer(@q.Id))">Add</button></p>
         }
     }
 
@@ -69,10 +69,10 @@ else
         {
             <p>@q.Id</p>
             <p>
-                <button class="btn-danger" @onclick="@(() => RemoveCache(@q.Id))">Del</button>
-                Lat:[@q.Latitude] Long:[{@q.Longitude}] Descr: {@q.Description}
+            <button class="btn-light" @onclick="@(() => SetCache(@q.Id))">Add</button>
+            <button class="btn-danger" @onclick="@(() => RemoveCache(@q.Id))">Del</button>
+            Lat:[@q.Latitude] Long:[{@q.Longitude}] Descr: {@q.Description}
             </p>
-            <p><button class="btn-danger" @onclick="@(() => SetCache(@q.Id))">Add</button></p>
         }
     }
 
@@ -89,14 +89,14 @@ else
 
 
 @code {
-        bool passCorrect = false;
-        string insertedPass = string.Empty;
+    bool passCorrect = false;
+    string insertedPass = string.Empty;
 
-        string orderId;
-        string question, answer, longitude, latitude, description, questionId, answerId, cacheId;
+    string orderId;
+    string question, answer, longitude, latitude, description, questionId, answerId, cacheId;
 
-        int currentCount = 0;
-        RetroCache.DTO.Inventory Inventory = new DTO.Inventory();
+    int currentCount = 0;
+    RetroCache.DTO.Inventory Inventory = new DTO.Inventory();
 
 
     protected override void OnInitialized()
