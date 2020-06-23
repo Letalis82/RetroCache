@@ -61,5 +61,11 @@ namespace RetroCache.Controllers
         {
             return _retroLogic.RestartGame();
         }
+
+        [HttpGet("ValidateGameStart")]
+        public BaseResult<bool> ValidateGameStart()
+        {
+            return _retroLogic.ValidateGameStart();
+        }
     }
 }

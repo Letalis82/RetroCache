@@ -41,6 +41,9 @@ namespace RetroCache
         private const string ADDQA = "/AddQuestionAnswerCombi";
         private const string ADDCACHE = "/AddCache";
 
+        private const string GETVALIDATEGAMESTART = "/ValidateGameStart";
+        
+
         private readonly IHttpClientFactory _http;
         private readonly RetroCacheConfiguration _config;
 
@@ -142,7 +145,7 @@ namespace RetroCache
             return false;
         }
 
-        public async Task<bool> Restart()
+        public async Task<BaseResult<bool>> Restart()
         {
             ResetQuestion();
             CurrentCache = null;
@@ -160,11 +163,10 @@ namespace RetroCache
             if (r.IsSuccessStatusCode)
             {
                 var d = JsonConvert.DeserializeObject<BaseResult<bool>>(await r.Content.ReadAsStringAsync());
-                return !d.HasError;
+                return d;
             }
 
-            return false;
-
+            return new BaseResult<bool>("Error deserialising answer");
         }
 
         public async Task<Inventory> GetInventory()
@@ -304,6 +306,23 @@ namespace RetroCache
             {
                 Question = "Oh ow.... problemen";
             }
+        }
+
+        public async Task<BaseResult<bool>> ValidateGameStart()
+        {
+            //restart
+            var ding = _http.CreateClient();
+
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{_config.ApiEndpoint}{DEFAULT}{GETVALIDATEGAMESTART}");
+            var r = await ding.SendAsync(request);
+
+            if (r.IsSuccessStatusCode)
+            {
+                var d = JsonConvert.DeserializeObject<BaseResult<bool>>(await r.Content.ReadAsStringAsync());
+                return d;
+            }
+
+            return new BaseResult<bool>("Error deserialising answer");
         }
 
     }

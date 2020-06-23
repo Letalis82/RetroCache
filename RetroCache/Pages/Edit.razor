@@ -38,13 +38,17 @@ else
     {
         @foreach (var q in Inventory.Questions)
         {
-            <p>@q.Id</p>
+            if (Inventory.QAs?.FirstOrDefault(x => x.QuestionId == q.Id) == null)
+            {<p>@q.Id</p>}
+            else
+            {
+                <p><b>In use: @q.Id</b></p>
+            }
             <p>
                 <button class="btn-light" @onclick="@(() => SetQuestion(@q.Id))">Add</button>
                 <button class="btn-danger" @onclick="@(() => RemoveQuestion(@q.Id))">Del</button> [@q.Order]
                 @q.QuestionString
             </p>
-
         }
     }
 
@@ -53,7 +57,12 @@ else
     {
         @foreach (var q in Inventory.Answers)
         {
-            <p>@q.Id</p>
+            if (Inventory.QAs?.FirstOrDefault(x => x.AnswerId == q.Id) == null)
+            {<p>@q.Id</p>}
+            else
+            {
+                <p><b>In use: @q.Id</b></p>
+            }
             <p>
                 <button class="btn-light" @onclick="@(() => SetAnswer(@q.Id))">Add</button>
                 <button class="btn-danger" @onclick="@(() => RemoveAnswer(@q.Id))">Del</button>
@@ -67,11 +76,16 @@ else
     {
         @foreach (var q in Inventory.Caches)
         {
-            <p>@q.Id</p>
+            if (Inventory.QAs?.FirstOrDefault(x => x.CacheId == q.Id) == null)
+            {<p>@q.Id</p>}
+            else
+            {
+                <p><b>In use: @q.Id</b></p>
+            }
             <p>
-            <button class="btn-light" @onclick="@(() => SetCache(@q.Id))">Add</button>
-            <button class="btn-danger" @onclick="@(() => RemoveCache(@q.Id))">Del</button>
-            Lat:[@q.Latitude] Long:[{@q.Longitude}] Descr: {@q.Description}
+                <button class="btn-light" @onclick="@(() => SetCache(@q.Id))">Add</button>
+                <button class="btn-danger" @onclick="@(() => RemoveCache(@q.Id))">Del</button>
+                Lat:[@q.Latitude] Long:[{@q.Longitude}] Descr: {@q.Description}
             </p>
         }
     }

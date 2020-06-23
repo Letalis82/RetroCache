@@ -8,25 +8,35 @@
 }
 else
 {
-
-    <h1>Restart the game?</h1>
+    <h1>Game manager</h1>
 
     <p><button class="btn btn-primary" @onclick="Start">Start the hunt!</button></p>
-    <p><button class="btn btn-primary" @onclick="RestartGame">Restart</button></p>
+    <p><button class="btn btn-primary" @onclick="ResetGame">Reset</button></p>
+
+    if (result != null)
+    {
+        <p>Result: @result.Data</p>
+        @result.ErrorMessage
+    }
 }
 
 @code {
     bool passCorrect = false;
     string insertedPass = string.Empty;
+    BaseResult<bool> result;
 
-    async void RestartGame()
+    async Task ResetGame()
     {
-        await gameState.Restart();
+        result = await gameState.Restart();
     }
 
-    void Start()
+    async Task Start()
     {
-        gameState.GameIsActive = true;
+        result = await gameState.ValidateGameStart();
+        if (!result.HasError && result.Data)
+        {
+            gameState.GameIsActive = true;
+        }
     }
 
     public void CheckPassword()

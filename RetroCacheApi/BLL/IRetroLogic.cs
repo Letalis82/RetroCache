@@ -28,6 +28,7 @@ namespace RetroCache.BLL
         BaseResult<Question> GetCurrentQuestion();
         BaseResult<bool> StartGame();
         BaseResult<bool> RestartGame();
+        BaseResult<bool> ValidateGameStart();
 
         BaseResult<Cache> GetCacheCorrespondingToQuestion(Guid questionId);
     }

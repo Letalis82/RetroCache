@@ -145,7 +145,8 @@ namespace RetroCache.BLL
 
                 return new BaseResult<bool>(true);
             }
-            return new BaseResult<bool>(false);
+
+            return startValidation;
         }
 
         public BaseResult<bool> RestartGame()
@@ -157,19 +158,19 @@ namespace RetroCache.BLL
 
                 return new BaseResult<bool>(true);
             }
-            return new BaseResult<bool>(false);
+            return startValidation;
         }
 
-        private BaseResult ValidateGameStart()
+        public BaseResult<bool> ValidateGameStart()
         {
             if (!_questionStore.Data.Any() || !_answerStore.Data.Any() || !_qaStore.Data.Any() || !_cacheStore.Data.Any())
             {
-                return new BaseResult("Cannot start, invalid questions / answers collection");
+                return new BaseResult<bool>("Cannot start, invalid questions / answers collection");
             }
 
             if (_questionStore.Data.Count != _qaStore.Data.Count || _questionStore.Data.Count != _answerStore.Data.Count || _questionStore.Data.Count != _cacheStore.Data.Count || _questionStore.Data.Count != _qaStore.Data.Count)
             {
-                return new BaseResult("Cannot start questions/answers/caches are nog equal size");
+                return new BaseResult<bool>("Cannot start questions/answers/caches are nog equal size");
             }
 
             for (int i = 1; i < _questionStore.Data.Count; i++)
@@ -177,7 +178,7 @@ namespace RetroCache.BLL
                 var c = _questionStore.Data.Select(c => c.Order == i).FirstOrDefault();
 
                 if (!c)
-                { return new BaseResult("Incorrect question order"); }
+                { return new BaseResult<bool>("Incorrect question order"); }
             }
 
             foreach (var item in _questionStore.Data)
@@ -186,7 +187,7 @@ namespace RetroCache.BLL
                     .Contains(item.Id);
 
                 if (!c)
-                { return new BaseResult("Question is not in the question list"); }
+                { return new BaseResult<bool>($"Question: {item.Id} is not in the QA list"); }
             }
 
             foreach (var item in _answerStore.Data)
@@ -195,7 +196,7 @@ namespace RetroCache.BLL
                    .Contains(item.Id);
 
                 if (!c)
-                { return new BaseResult("Answer is not in the question list"); }
+                { return new BaseResult<bool>($"Answer: {item.Id} is not in the QA list"); }
             }
 
             foreach (var item in _cacheStore.Data)
@@ -204,10 +205,10 @@ namespace RetroCache.BLL
                   .Contains(item.Id);
 
                 if (!c)
-                { return new BaseResult("Cache is not in the question list"); }
+                { return new BaseResult<bool>($"Cache: {item.Id} is not in the QA list"); }
             }
 
-            return new BaseResult();
+            return new BaseResult<bool>(true);
         }
 
         public BaseResult<List<Cache>> GetCaches()
