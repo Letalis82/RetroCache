@@ -39,7 +39,11 @@ else
         @foreach (var q in Inventory.Questions)
         {
             <p>@q.Id</p>
-            <p><button class="btn-danger" @onclick="@(() => RemoveQuestion(@q.Id))">Del</button> [@q.Order] @q.QuestionString</p>
+            <p>
+                <button class="btn-danger" @onclick="@(() => RemoveQuestion(@q.Id))">Del</button> [@q.Order]
+                @q.QuestionString
+            </p>
+            <p><button class="btn-danger" @onclick="@(() => SetAnswer(@q.Id))">Add</button></p>
 
         }
     }
@@ -50,7 +54,11 @@ else
         @foreach (var q in Inventory.Answers)
         {
             <p>@q.Id</p>
-            <p><button class="btn-danger" @onclick="@(() => RemoveAnswer(@q.Id))">Del</button> @q.AnswerString</p>
+            <p>
+                <button class="btn-danger" @onclick="@(() => RemoveAnswer(@q.Id))">Del</button>
+                @q.AnswerString
+            </p>
+            <p><button class="btn-danger" @onclick="@(() => SetAnswer(@q.Id))">Add</button></p>
         }
     }
 
@@ -60,7 +68,11 @@ else
         @foreach (var q in Inventory.Caches)
         {
             <p>@q.Id</p>
-            <p><button class="btn-danger" @onclick="@(() => RemoveCache(@q.Id))">Del</button> Lat:[@q.Latitude] Long:[{@q.Longitude}] Descr: {@q.Description}</p>
+            <p>
+                <button class="btn-danger" @onclick="@(() => RemoveCache(@q.Id))">Del</button>
+                Lat:[@q.Latitude] Long:[{@q.Longitude}] Descr: {@q.Description}
+            </p>
+            <p><button class="btn-danger" @onclick="@(() => SetCache(@q.Id))">Add</button></p>
         }
     }
 
@@ -148,6 +160,15 @@ else
         }
 
         await gameState.AddQuestion(int.Parse(orderId), question);
+
+        question = string.Empty;
+        try
+        {
+            int nr = int.Parse(orderId);
+            nr++;
+            orderId = nr.ToString();
+        }
+        catch { }
         ShowInventory();
     }
 
@@ -159,6 +180,9 @@ else
         }
 
         await gameState.AddAnswer(answer);
+
+        answer = string.Empty;
+
         ShowInventory();
     }
 
@@ -170,6 +194,10 @@ else
         }
 
         await gameState.AddQA(Guid.Parse(questionId), Guid.Parse(answerId), Guid.Parse(cacheId));
+
+        answerId = string.Empty;
+        questionId = string.Empty;
+        cacheId = string.Empty;
         ShowInventory();
     }
 
@@ -181,6 +209,26 @@ else
         }
 
         await gameState.AddCache(description, latitude, longitude);
+
+        description = string.Empty;
+        latitude = string.Empty;
+        longitude = string.Empty;
+
         ShowInventory();
+    }
+
+    void SetQuestion(Guid id)
+    {
+        questionId = id.ToString();
+    }
+
+    void SetAnswer(Guid id)
+    {
+        answerId = id.ToString();
+    }
+
+    void SetCache(Guid id)
+    {
+        cacheId = id.ToString();
     }
 }
