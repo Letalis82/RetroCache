@@ -84,7 +84,7 @@ namespace RetroCache.Controllers
         [HttpPost("AddCache")]
         public BaseResult AddCache(AddCacheRequest request)
         {
-            return _retroLogic.AddCache(request.Description, request.Latitude, request.Latitude, request.Hints);
+            return _retroLogic.AddCache(request.Description, request.Latitude, request.Longitude, request.Hints);
         }
 
         [HttpDelete("RemoveCache")]
